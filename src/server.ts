@@ -1,8 +1,4 @@
-function login(): string {
-    const user = {
-        name: "Ritik",
-    };
-    const name = user.name;
-    return name;
+function login(): boolean {
+    return true;
 }
 login();

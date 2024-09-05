@@ -1,4 +1,4 @@
-function login(username: String): boolean {
+function login(): boolean {
     return true;
 }
-login("heancher");
+login();

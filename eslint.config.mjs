@@ -5,7 +5,6 @@ import tseslint from "typescript-eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
 
 export default tseslint.config({
-    ignores: ["dist", "node_modules", "**/*.config.mjs"],
     extends: [
         eslint.configs.recommended,
         ...tseslint.configs.recommendedTypeChecked,
@@ -23,4 +22,5 @@ export default tseslint.config({
         "no-console": "error",
         "dot-notation": "error",
     },
+    ignores: ["dist", "node_modules", "**/*.config.mjs", "**/*.js"],
 });

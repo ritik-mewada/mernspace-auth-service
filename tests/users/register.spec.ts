@@ -6,20 +6,19 @@ import { User } from "../../src/entity/User";
 import { Roles } from "../../src/constants";
 
 describe("POST /auth/register", () => {
+    let connection: DataSource;
+
+    beforeAll(async () => {
+        connection = await AppDataSource.initialize();
+    });
+    beforeEach(async () => {
+        await connection.dropDatabase();
+        await connection.synchronize();
+    });
+    afterAll(async () => {
+        await connection.destroy();
+    });
     describe("Given all fields", () => {
-        let connection: DataSource;
-
-        beforeAll(async () => {
-            connection = await AppDataSource.initialize();
-        });
-        beforeEach(async () => {
-            await connection.dropDatabase();
-            await connection.synchronize();
-        });
-        afterAll(async () => {
-            await connection.destroy();
-        });
-
         it("should return the 200 status code", async () => {
             const userData = {
                 firstName: "Ritik",
@@ -151,5 +150,25 @@ describe("POST /auth/register", () => {
         });
     });
 
-    describe("Fields are missing", () => {});
+    describe("Fields are missing", () => {
+        it("should return 400 status code if email field is missing", async () => {
+            const userData = {
+                firstName: "Ritik",
+                lastName: "Mewada",
+                email: "",
+                password: "secret",
+                role: Roles.CUSTOMER,
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            const userRepository = connection.getRepository(User);
+            const users = await userRepository.find();
+
+            expect(response.statusCode).toBe(400);
+            expect(users).toHaveLength(0);
+        });
+    });
 });

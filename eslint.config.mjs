@@ -24,5 +24,11 @@ export default tseslint.config({
         "@typescript-eslint/no-misused-promises": "off",
         "@typescript-eslint/require-await": "off",
     },
-    ignores: ["dist", "node_modules", "**/*.config.mjs", "**/*.js"],
+    ignores: [
+        "dist",
+        "node_modules",
+        "**/*.config.mjs",
+        "**/*.js",
+        "scripts/**/*.mjs",
+    ],
 });

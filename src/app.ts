@@ -15,7 +15,7 @@ app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message);
 
     const statusCode = err.statusCode || 500;
-    res.send(statusCode).json({
+    res.status(statusCode).json({
         errors: [
             {
                 type: err.name,

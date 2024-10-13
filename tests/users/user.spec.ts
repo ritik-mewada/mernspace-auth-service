@@ -95,5 +95,22 @@ describe("GET /auth/self", () => {
                 "password",
             );
         });
+
+        it("should return 401 status code if token does not exists", async () => {
+            const userData = {
+                firstName: "Ritik",
+                lastName: "Mewada",
+                email: "ritik@mern.space",
+                password: "password",
+                role: Roles.CUSTOMER,
+            };
+
+            const userRepository = connection.getRepository(User);
+            await userRepository.save(userData);
+
+            const response = await request(app).get("/auth/self").send();
+
+            expect(response.statusCode).toBe(401);
+        });
     });
 });

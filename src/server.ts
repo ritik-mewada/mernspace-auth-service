@@ -25,3 +25,6 @@ void startServer();
 
 // FOR POSTGRES CONTAINER
 // docker run --rm --name mernpg-container -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -v mernpgdata:/var/lib/postgres/data -p 5432:5432 -d postgres
+
+// FOR MIGRATION
+// npm run migration:generate -- src/migration/rename_tables -d src/config/data-source.ts

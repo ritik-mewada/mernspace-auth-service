@@ -7,6 +7,7 @@ import { UserService } from "../services/UserService";
 import { AppDataSource } from "../config/data-source";
 import { User } from "../entity/User";
 import logger from "../config/logger";
+import createUserValidator from "../validators/create-user-validator";
 
 const router = express.Router();
 
@@ -17,6 +18,7 @@ const userController = new UserController(userService, logger);
 router.post(
     "/",
     authenticate,
+    createUserValidator,
     canAccess([Roles.ADMIN]),
     (req: Request, res: Response, next: NextFunction) =>
         userController.create(req, res, next),

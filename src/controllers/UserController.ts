@@ -3,6 +3,8 @@ import { UserService } from "../services/UserService";
 import { CreateUserRequest } from "../types";
 import { Logger } from "winston";
 import { Roles } from "../constants";
+import { validationResult } from "express-validator";
+import createHttpError from "http-errors";
 
 export class UserController {
     constructor(
@@ -11,6 +13,10 @@ export class UserController {
     ) {}
 
     async create(req: CreateUserRequest, res: Response, next: NextFunction) {
+        const result = validationResult(req);
+        if (!result.isEmpty()) {
+            return next(createHttpError(400, result.array()[0].msg as string));
+        }
         const { firstName, lastName, email, password } = req.body;
 
         this.logger.info("Retrived all data", req.body.firstName);

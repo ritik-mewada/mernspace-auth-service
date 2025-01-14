@@ -1,4 +1,9 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, {
+    NextFunction,
+    Request,
+    RequestHandler,
+    Response,
+} from "express";
 import { TenantController } from "../controllers/TenantController";
 import { TenantService } from "../services/TenantService";
 import { Tenant } from "../entity/Tenant";
@@ -29,6 +34,14 @@ router.get(
     listUsersValidator,
     (req: Request, res: Response, next: NextFunction) =>
         tenantController.getAll(req, res, next),
+);
+
+router.get(
+    "/:id",
+    authenticate as RequestHandler,
+    canAccess([Roles.ADMIN]),
+    (req: Request, res: Response, next: NextFunction) =>
+        tenantController.getOne(req, res, next),
 );
 
 export default router;

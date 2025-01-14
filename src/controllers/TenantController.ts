@@ -3,6 +3,7 @@ import { TenantService } from "../services/TenantService";
 import { CreateTenantRequest, TenantQueryParams } from "../types";
 import { Logger } from "winston";
 import { matchedData, validationResult } from "express-validator";
+import createHttpError from "http-errors";
 
 export class TenantController {
     constructor(
@@ -46,6 +47,28 @@ export class TenantController {
             });
 
             res.json(tenants);
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    async getOne(req: Request, res: Response, next: NextFunction) {
+        const tenantId = req.params.id;
+
+        if (isNaN(Number(tenantId))) {
+            next(createHttpError(400, "Invalid url param."));
+            return;
+        }
+
+        try {
+            const tenant = await this.tenantService.getById(Number(tenantId));
+
+            if (!tenant) {
+                next(createHttpError(400, "Tenant does not exist."));
+                return;
+            }
+            this.logger.info("Tenant has been fetched");
+            res.json(tenant);
         } catch (err) {
             next(err);
         }

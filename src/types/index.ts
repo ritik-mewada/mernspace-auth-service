@@ -47,3 +47,7 @@ export interface TenantQueryParams {
     perPage: number;
     currentPage: number;
 }
+
+export interface CreateUserRequest extends Request {
+    body: UserData;
+}

@@ -53,4 +53,11 @@ router.patch(
         tenantController.update(req, res, next),
 );
 
+router.delete(
+    "/:id",
+    authenticate as RequestHandler,
+    canAccess([Roles.ADMIN]),
+    (req, res, next) => tenantController.destroy(req, res, next),
+);
+
 export default router;

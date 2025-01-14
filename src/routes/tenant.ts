@@ -8,6 +8,7 @@ import authenticate from "../middlewares/authenticate";
 import { canAccess } from "../middlewares/canAccess";
 import { Roles } from "../constants";
 import tenantValidator from "../validators/tenant-validator";
+import listUsersValidator from "../validators/list-users-validator";
 
 const router = express.Router();
 const tenantRepository = AppDataSource.getRepository(Tenant);
@@ -21,6 +22,13 @@ router.post(
     canAccess([Roles.ADMIN]),
     (req: Request, res: Response, next: NextFunction) =>
         tenantController.create(req, res, next),
+);
+
+router.get(
+    "/",
+    listUsersValidator,
+    (req: Request, res: Response, next: NextFunction) =>
+        tenantController.getAll(req, res, next),
 );
 
 export default router;

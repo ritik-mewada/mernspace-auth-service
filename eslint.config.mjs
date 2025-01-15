@@ -25,7 +25,7 @@ export default tseslint.config({
         "@typescript-eslint/require-await": "off",
     },
     ignores: [
-        "dist/**",
+        "dist",
         "node_modules/**",
         "**/*.config.mjs",
         "**/*.js",

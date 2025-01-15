@@ -1,6 +1,6 @@
 import { Brackets, Repository } from "typeorm";
 import { User } from "../entity/User";
-import { UserData, UserQueryParams } from "../types";
+import { LimitedUserData, UserData, UserQueryParams } from "../types";
 import createHttpError from "http-errors";
 import bcrypt from "bcrypt";
 
@@ -75,5 +75,26 @@ export class UserService {
             .getManyAndCount();
 
         return result;
+    }
+
+    async update(
+        userId: number,
+        { firstName, lastName, role, email, tenantId }: LimitedUserData,
+    ) {
+        try {
+            return await this.userRepository.update(userId, {
+                firstName,
+                lastName,
+                role,
+                email,
+                tenant: tenantId ? { id: tenantId } : null,
+            });
+        } catch {
+            const error = createHttpError(
+                500,
+                "Failed to update the user in the database",
+            );
+            throw error;
+        }
     }
 }

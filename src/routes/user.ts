@@ -9,6 +9,8 @@ import { User } from "../entity/User";
 import logger from "../config/logger";
 import createUserValidator from "../validators/create-user-validator";
 import listUsersValidator from "../validators/list-users-validator";
+import updateUserValidator from "../validators/update-user-validator";
+import { UpdateUserRequest } from "../types";
 
 const router = express.Router();
 
@@ -40,6 +42,15 @@ router.get(
     canAccess([Roles.ADMIN]),
     (req: Request, res: Response, next: NextFunction) =>
         userController.getOne(req, res, next),
+);
+
+router.patch(
+    "/:id",
+    authenticate,
+    canAccess([Roles.ADMIN]),
+    updateUserValidator,
+    (req: UpdateUserRequest, res: Response, next: NextFunction) =>
+        userController.update(req, res, next),
 );
 
 export default router;

@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/UserService";
-import { CreateUserRequest, UserQueryParams } from "../types";
+import {
+    CreateUserRequest,
+    UpdateUserRequest,
+    UserQueryParams,
+} from "../types";
 import { Logger } from "winston";
 import { Roles } from "../constants";
 import { matchedData, validationResult } from "express-validator";
@@ -74,6 +78,39 @@ export class UserController {
             }
             this.logger.info("User has been fetched", { id: user.id });
             res.json(user);
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    async update(req: UpdateUserRequest, res: Response, next: NextFunction) {
+        const result = validationResult(req);
+        if (!result.isEmpty()) {
+            return res.status(400).json({ errors: result.array() });
+        }
+
+        const { firstName, lastName, role, email, tenantId } = req.body;
+        const userId = req.params.id;
+
+        if (isNaN(Number(userId))) {
+            next(createHttpError(400, "Invalid url param."));
+            return;
+        }
+
+        this.logger.debug("Request for updating a user", req.body);
+
+        try {
+            await this.userService.update(Number(userId), {
+                firstName,
+                lastName,
+                role,
+                email,
+                tenantId,
+            });
+
+            this.logger.info("User has been updated", { id: userId });
+
+            res.json({ id: Number(userId) });
         } catch (err) {
             next(err);
         }

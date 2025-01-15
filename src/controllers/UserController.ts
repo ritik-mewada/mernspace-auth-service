@@ -6,7 +6,6 @@ import {
     UserQueryParams,
 } from "../types";
 import { Logger } from "winston";
-import { Roles } from "../constants";
 import { matchedData, validationResult } from "express-validator";
 import createHttpError from "http-errors";
 
@@ -21,7 +20,8 @@ export class UserController {
         if (!result.isEmpty()) {
             return next(createHttpError(400, result.array()[0].msg as string));
         }
-        const { firstName, lastName, email, password } = req.body;
+        const { firstName, lastName, email, password, tenantId, role } =
+            req.body;
 
         this.logger.info("Retrived all data", req.body.firstName);
         try {
@@ -30,7 +30,8 @@ export class UserController {
                 lastName,
                 email,
                 password,
-                role: Roles.MANAGER,
+                role,
+                tenantId,
             });
             this.logger.info("user created");
             res.status(201).json({ id: user.id });

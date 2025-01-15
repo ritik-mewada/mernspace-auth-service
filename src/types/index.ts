@@ -51,3 +51,10 @@ export interface TenantQueryParams {
 export interface CreateUserRequest extends Request {
     body: UserData;
 }
+
+export interface UserQueryParams {
+    perPage: number;
+    currentPage: number;
+    q: string;
+    role: string;
+}

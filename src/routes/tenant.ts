@@ -13,7 +13,7 @@ import authenticate from "../middlewares/authenticate";
 import { canAccess } from "../middlewares/canAccess";
 import { Roles } from "../constants";
 import tenantValidator from "../validators/tenant-validator";
-import listUsersValidator from "../validators/list-users-validator";
+import listTenantValidator from "../validators/list-tenant-validator";
 
 const router = express.Router();
 const tenantRepository = AppDataSource.getRepository(Tenant);
@@ -31,7 +31,7 @@ router.post(
 
 router.get(
     "/",
-    listUsersValidator,
+    listTenantValidator,
     (req: Request, res: Response, next: NextFunction) =>
         tenantController.getAll(req, res, next),
 );

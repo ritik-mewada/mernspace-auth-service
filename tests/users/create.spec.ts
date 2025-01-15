@@ -46,6 +46,7 @@ describe("POST /users", () => {
                 email: "ritik@mern.space",
                 password: "password",
                 tenantId: tenant.id,
+                role: Roles.MANAGER,
             };
 
             await request(app)

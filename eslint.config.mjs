@@ -23,7 +23,6 @@ export default tseslint.config({
         "dot-notation": "error",
         "@typescript-eslint/no-misused-promises": "off",
         "@typescript-eslint/require-await": "off",
-        "@typescript-eslint/no-unused-vars": "off",
     },
     ignores: [
         "dist/**",

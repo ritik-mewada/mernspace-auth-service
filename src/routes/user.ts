@@ -34,4 +34,12 @@ router.get(
         userController.getAll(req, res, next),
 );
 
+router.get(
+    "/:id",
+    authenticate,
+    canAccess([Roles.ADMIN]),
+    (req: Request, res: Response, next: NextFunction) =>
+        userController.getOne(req, res, next),
+);
+
 export default router;

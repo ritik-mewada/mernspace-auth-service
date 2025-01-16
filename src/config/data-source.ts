@@ -7,7 +7,7 @@ export const AppDataSource = new DataSource({
     host: Config.DB_HOST,
     port: Number(Config.DB_PORT),
     username: Config.DB_USERNAME,
-    password: Config.DB_USERNAME,
+    password: Config.DB_PASSWORD,
     database: Config.DB_NAME,
     synchronize: false,
     logging: false,

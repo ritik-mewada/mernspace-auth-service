@@ -23,17 +23,17 @@ const tenantController = new TenantController(tenanatService, logger);
 router.post(
     "/",
     tenantValidator,
-    authenticate,
+    authenticate as RequestHandler,
     canAccess([Roles.ADMIN]),
     (req: Request, res: Response, next: NextFunction) =>
-        tenantController.create(req, res, next),
+        tenantController.create(req, res, next) as unknown as RequestHandler,
 );
 
 router.get(
     "/",
     listTenantValidator,
     (req: Request, res: Response, next: NextFunction) =>
-        tenantController.getAll(req, res, next),
+        tenantController.getAll(req, res, next) as unknown as RequestHandler,
 );
 
 router.get(
@@ -41,7 +41,7 @@ router.get(
     authenticate as RequestHandler,
     canAccess([Roles.ADMIN]),
     (req: Request, res: Response, next: NextFunction) =>
-        tenantController.getOne(req, res, next),
+        tenantController.getOne(req, res, next) as unknown as RequestHandler,
 );
 
 router.patch(
@@ -50,14 +50,15 @@ router.patch(
     canAccess([Roles.ADMIN]),
     tenantValidator,
     (req: Request, res: Response, next: NextFunction) =>
-        tenantController.update(req, res, next),
+        tenantController.update(req, res, next) as unknown as RequestHandler,
 );
 
 router.delete(
     "/:id",
     authenticate as RequestHandler,
     canAccess([Roles.ADMIN]),
-    (req, res, next) => tenantController.destroy(req, res, next),
+    (req, res, next) =>
+        tenantController.destroy(req, res, next) as unknown as RequestHandler,
 );
 
 export default router;

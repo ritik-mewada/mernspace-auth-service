@@ -1,4 +1,9 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, {
+    NextFunction,
+    Request,
+    Response,
+    RequestHandler,
+} from "express";
 import authenticate from "../middlewares/authenticate";
 import { canAccess } from "../middlewares/canAccess";
 import { Roles } from "../constants";
@@ -20,45 +25,45 @@ const userController = new UserController(userService, logger);
 
 router.post(
     "/",
-    authenticate,
+    authenticate as RequestHandler,
     createUserValidator,
     canAccess([Roles.ADMIN]),
     (req: Request, res: Response, next: NextFunction) =>
-        userController.create(req, res, next),
+        userController.create(req, res, next) as unknown as RequestHandler,
 );
 
 router.get(
     "/",
-    authenticate,
+    authenticate as RequestHandler,
     canAccess([Roles.ADMIN]),
     listUsersValidator,
     (req: Request, res: Response, next: NextFunction) =>
-        userController.getAll(req, res, next),
+        userController.getAll(req, res, next) as unknown as RequestHandler,
 );
 
 router.get(
     "/:id",
-    authenticate,
+    authenticate as RequestHandler,
     canAccess([Roles.ADMIN]),
     (req: Request, res: Response, next: NextFunction) =>
-        userController.getOne(req, res, next),
+        userController.getOne(req, res, next) as unknown as RequestHandler,
 );
 
 router.patch(
     "/:id",
-    authenticate,
+    authenticate as RequestHandler,
     canAccess([Roles.ADMIN]),
     updateUserValidator,
     (req: UpdateUserRequest, res: Response, next: NextFunction) =>
-        userController.update(req, res, next),
+        userController.update(req, res, next) as unknown as RequestHandler,
 );
 
 router.delete(
     "/:id",
-    authenticate,
+    authenticate as RequestHandler,
     canAccess([Roles.ADMIN]),
     (req: Request, res: Response, next: NextFunction) =>
-        userController.destroy(req, res, next),
+        userController.destroy(req, res, next) as unknown as RequestHandler,
 );
 
 export default router;

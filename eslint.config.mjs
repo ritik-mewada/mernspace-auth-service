@@ -21,7 +21,6 @@ export default tseslint.config({
     rules: {
         "no-console": "error",
         "dot-notation": "error",
-        "@typescript-eslint/no-misused-promises": "off",
         "@typescript-eslint/require-await": "off",
     },
     ignores: [
@@ -33,5 +32,6 @@ export default tseslint.config({
         "*.spec.ts",
         "tests/**",
         "*.js",
+        ".github",
     ],
 });

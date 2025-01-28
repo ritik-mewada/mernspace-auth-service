@@ -2,12 +2,46 @@ import app from "./app";
 import { Config } from "./config";
 import { AppDataSource } from "./config/data-source";
 import logger from "./config/logger";
+import { Roles } from "./constants";
+import { User } from "./entity/User";
+import { UserService } from "./services/UserService";
+
+const createDefaultAdmin = async () => {
+    const userRepository = AppDataSource.getRepository(User);
+    const userService = new UserService(userRepository);
+
+    const adminEmail = "admin@mern.space";
+    const adminPassword = "admin";
+
+    try {
+        const existingAdmin =
+            await userService.findByEmailWithPassword(adminEmail);
+        if (!existingAdmin) {
+            logger.info("Creating default admin user...");
+            await userService.create({
+                firstName: "Admin",
+                lastName: "User",
+                email: adminEmail,
+                password: adminPassword,
+                role: Roles.ADMIN,
+            });
+            logger.info("Default admin user created successfully!");
+        } else {
+            logger.info("Default admin user already exists.");
+        }
+    } catch (error) {
+        logger.error("Error creating default admin user:", error);
+    }
+};
 
 const startServer = async () => {
     const PORT = Config.PORT;
     try {
         await AppDataSource.initialize();
         logger.info("Database connected successfully.");
+
+        await createDefaultAdmin();
+
         app.listen(PORT, () => logger.info(`listening on PORT ${PORT}`));
     } catch (err: unknown) {
         if (err instanceof Error) {

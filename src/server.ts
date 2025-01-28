@@ -2,18 +2,12 @@ import app from "./app";
 import { Config } from "./config";
 import { AppDataSource } from "./config/data-source";
 import logger from "./config/logger";
-import { createDefaultAdmin } from "./config/create-admin";
-import { UserService } from "./services/UserService";
-import { User } from "./entity/User";
 
 const startServer = async () => {
     const PORT = Config.PORT;
     try {
         await AppDataSource.initialize();
         logger.info("Database connected successfully.");
-
-        const userService = new UserService(AppDataSource.getRepository(User));
-        await createDefaultAdmin(userService);
 
         app.listen(PORT, () => logger.info(`listening on PORT ${PORT}`));
     } catch (err: unknown) {

@@ -10,19 +10,17 @@ const createDefaultAdmin = async () => {
     const userRepository = AppDataSource.getRepository(User);
     const userService = new UserService(userRepository);
 
-    const adminEmail = "admin@mern.space";
-    const adminPassword = "admin";
-
     try {
-        const existingAdmin =
-            await userService.findByEmailWithPassword(adminEmail);
+        const existingAdmin = await userService.findByEmailWithPassword(
+            Config.ADMIN_EMAIL!,
+        );
         if (!existingAdmin) {
             logger.info("Creating default admin user...");
             await userService.create({
                 firstName: "Admin",
                 lastName: "User",
-                email: adminEmail,
-                password: adminPassword,
+                email: Config.ADMIN_EMAIL!,
+                password: Config.ADMIN_PASSWORD!,
                 role: Roles.ADMIN,
             });
             logger.info("Default admin user created successfully!");

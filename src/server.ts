@@ -2,35 +2,9 @@ import app from "./app";
 import { Config } from "./config";
 import { AppDataSource } from "./config/data-source";
 import logger from "./config/logger";
-import { Roles } from "./constants";
-import { User } from "./entity/User";
+import { createDefaultAdmin } from "./config/create-admin";
 import { UserService } from "./services/UserService";
-
-const createDefaultAdmin = async () => {
-    const userRepository = AppDataSource.getRepository(User);
-    const userService = new UserService(userRepository);
-
-    try {
-        const existingAdmin = await userService.findByEmailWithPassword(
-            Config.ADMIN_EMAIL!,
-        );
-        if (!existingAdmin) {
-            logger.info("Creating default admin user...");
-            await userService.create({
-                firstName: "Admin",
-                lastName: "User",
-                email: Config.ADMIN_EMAIL!,
-                password: Config.ADMIN_PASSWORD!,
-                role: Roles.ADMIN,
-            });
-            logger.info("Default admin user created successfully!");
-        } else {
-            logger.info("Default admin user already exists.");
-        }
-    } catch (error) {
-        logger.error("Error creating default admin user:", error);
-    }
-};
+import { User } from "./entity/User";
 
 const startServer = async () => {
     const PORT = Config.PORT;
@@ -38,7 +12,8 @@ const startServer = async () => {
         await AppDataSource.initialize();
         logger.info("Database connected successfully.");
 
-        await createDefaultAdmin();
+        const userService = new UserService(AppDataSource.getRepository(User));
+        await createDefaultAdmin(userService);
 
         app.listen(PORT, () => logger.info(`listening on PORT ${PORT}`));
     } catch (err: unknown) {

@@ -2,12 +2,19 @@ import "reflect-metadata";
 import express, { NextFunction, Request, Response } from "express";
 import { HttpError } from "http-errors";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import logger from "./config/logger";
 import authRouter from "./routes/auth";
 import tenantRouter from "./routes/tenant";
 import userRouter from "./routes/user";
 
 const app = express();
+app.use(
+    cors({
+        origin: ["http://localhost:5173"],
+        credentials: true,
+    }),
+);
 app.use(express.static("public"));
 app.use(cookieParser());
 app.use(express.json());

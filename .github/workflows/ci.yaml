@@ -43,7 +43,7 @@ jobs:
         needs: build-and-test
         runs-on: ubuntu-latest
         env:
-            IMAGE_NAME: ritikmewada/mernspace-c-auth-service
+            IMAGE_NAME: ritikmewada/mernspace-auth-service
             IMAGE_TAG: build-${{ github.run_number }}
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         steps:

@@ -22,6 +22,7 @@ export default tseslint.config({
         "no-console": "error",
         "dot-notation": "error",
         "@typescript-eslint/require-await": "off",
+        "@typescript-eslint/prefer-readonly-parameter-types": "off",
     },
     ignores: [
         "dist",

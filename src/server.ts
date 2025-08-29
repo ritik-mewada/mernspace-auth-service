@@ -37,4 +37,7 @@ void startServer();
 
 * FOR MIGRATION
 - npm run migration:generate -- src/migration/rename_tables -d src/config/data-source.ts
+
+* FOR INITIAL MIGRATION WHEN SETTING UP AUTH SERVICE FOR THE FIRST TIME
+- npm run migration:run -d src/config/data-source.ts
 */

@@ -64,7 +64,10 @@ export class UserService {
     }
 
     async findById(id: number) {
-        return this.userRepository.findOne({ where: { id } });
+        return this.userRepository.findOne({
+            where: { id },
+            relations: { tenant: true },
+        });
     }
 
     async getAll(validatedQuery: UserQueryParams) {
@@ -75,7 +78,7 @@ export class UserService {
             queryBuilder.where(
                 new Brackets((qb) => {
                     qb.where(
-                        "CONCAT(user.firstName, ' ', user.lastName ILike :q",
+                        "CONCAT(user.firstName, ' ', user.lastName) ILike :q",
                         {
                             q: searchTerm,
                         },

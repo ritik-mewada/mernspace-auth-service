@@ -1,6 +1,7 @@
 import { Repository } from "typeorm";
 import { ITenant, TenantQueryParams } from "../types";
 import { Tenant } from "../entity/Tenant";
+import createHttpError from "http-errors";
 
 export class TenantService {
     constructor(private tenantRepository: Repository<Tenant>) {}
@@ -15,7 +16,7 @@ export class TenantService {
         if (validatedQuery.q) {
             const searchTerm = `%${validatedQuery.q}%`;
             queryBuilder.where(
-                "CONCAT(tenant.name, ' ', tenant.address)ILike :q",
+                "CONCAT(tenant.name, ' ', tenant.address) ILike :q",
                 { q: searchTerm },
             );
         }
@@ -38,7 +39,15 @@ export class TenantService {
     }
 
     async update(id: number, tenantData: ITenant) {
-        return await this.tenantRepository.update(id, tenantData);
+        try {
+            return await this.tenantRepository.update(id, tenantData);
+        } catch {
+            const error = createHttpError(
+                500,
+                "Failed to update the tenant in the database",
+            );
+            throw error;
+        }
     }
 
     async deleteById(tenantId: number) {

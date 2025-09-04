@@ -18,6 +18,8 @@ const {
     PRIVATE_KEY,
     ADMIN_EMAIL,
     ADMIN_PASSWORD,
+    CLIENT_UI_DOMAIN,
+    ADMIN_UI_DOMAIN,
 } = process.env;
 
 export const Config = {
@@ -33,4 +35,6 @@ export const Config = {
     PRIVATE_KEY,
     ADMIN_EMAIL,
     ADMIN_PASSWORD,
+    CLIENT_UI_DOMAIN,
+    ADMIN_UI_DOMAIN,
 };
